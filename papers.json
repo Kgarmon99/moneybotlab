@@ -1,17 +1,6 @@
 {
   "papers": [
     {
-      "id": "test-upload-paper",
-      "slug": "test-upload-paper",
-      "title": "Test Upload Paper",
-      "authors": "Joseph Felkins",
-      "category": "FinTech",
-      "date": "2026-08-20",
-      "abstract": "This is a test paper uploaded via the admin portal to verify the GitHub commit workflow.",
-      "pdfUrl": "/papers/test-upload-paper.pdf",
-      "filename": "test-upload-paper.pdf"
-    },
-    {
       "id": "ai-tutors-financial-literacy",
       "title": "AI Tutors and the Future of Financial Literacy",
       "authors": "MoneyBot Lab Research Team",
