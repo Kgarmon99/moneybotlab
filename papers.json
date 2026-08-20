@@ -1,0 +1,24 @@
+{
+  "papers": [
+    {
+      "id": "ai-tutors-financial-literacy",
+      "title": "AI Tutors and the Future of Financial Literacy",
+      "authors": "MoneyBot Lab Research Team",
+      "category": "EdTech",
+      "date": "2026-08-15",
+      "abstract": "An exploration of how conversational AI changes the way people learn compound interest, budgeting, and investment fundamentals.",
+      "pdfUrl": "/papers/ai-tutors-financial-literacy.pdf",
+      "slug": "ai-tutors-financial-literacy"
+    },
+    {
+      "id": "immersive-risk-simulation",
+      "title": "Immersive Risk Simulation in Financial Decision-Making",
+      "authors": "MoneyBot Lab Research Team",
+      "category": "ImmersiveTech",
+      "date": "2026-08-10",
+      "abstract": "How VR and spatial interfaces can make abstract financial risk tangible, improving recall and reducing impulsive choices.",
+      "pdfUrl": "/papers/immersive-risk-simulation.pdf",
+      "slug": "immersive-risk-simulation"
+    }
+  ]
+}

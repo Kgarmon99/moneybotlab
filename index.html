@@ -3,1104 +3,599 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="MoneyBot Labs builds playable financial education experiments — games, simulators, and AI interfaces that make money skills stick.">
-  <meta property="og:title" content="MoneyBot Labs — Playable money experiments">
-  <meta property="og:description" content="A research surface for playable money experiments: games, simulators, and AI interfaces.">
+  <meta name="description" content="MoneyBot Lab publishes research at the intersection of education technology, financial technology, media technology, and immersive technology.">
+  <meta property="og:title" content="MoneyBot Lab — Applied Research">
+  <meta property="og:description" content="Research at the edge of education, finance, media, and immersive technology.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://moneybotlab.com">
   <meta name="twitter:card" content="summary_large_image">
-  <title>MoneyBot Labs | Playable money experiments</title>
+  <title>MoneyBot Lab — Applied Research</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0a0a1a;
-      --bg-elev: #101026;
-      --panel: rgba(255, 255, 255, 0.045);
-      --panel-strong: rgba(255, 255, 255, 0.08);
-      --border: rgba(255, 255, 255, 0.10);
-      --green: #00E676;
-      --green-dim: #00C853;
-      --green-glow: rgba(0, 230, 118, 0.28);
-      --blue: #00B0FF;
-      --red: #FF3D00;
-      --text: #f4f4fb;
-      --muted: #9aa0b8;
-      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      --radius: 14px;
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --surface-2: #f5f5f7;
+      --border: #e8e8ed;
+      --border-strong: #d2d2d7;
+      --text: #111111;
+      --text-secondary: #6e6e73;
+      --text-tertiary: #86868b;
+      --accent: #1d1d1f;
+      --accent-soft: #f2f2f2;
+      --link: #0066cc;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+      --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
+      --shadow-lg: 0 4px 24px rgba(0,0,0,0.06);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
-
     body {
       font-family: var(--font);
       color: var(--text);
       background: var(--bg);
-      line-height: 1.5;
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     }
-
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; }
     ul { list-style: none; }
 
     .shell {
-      width: min(1200px, calc(100% - 32px));
+      width: min(1100px, calc(100% - 48px));
       margin: 0 auto;
     }
 
-    /* ===== PRELOADER ===== */
-    #preloader {
-      position: fixed; inset: 0; z-index: 9999;
-      background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
-    #preloader.done { opacity: 0; visibility: hidden; pointer-events: none; }
-    .preloader-inner {
-      display: flex; flex-direction: column; align-items: center; gap: 20px;
-    }
-    .preloader-bar {
-      width: 120px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden;
-    }
-    .preloader-bar i {
-      display: block; height: 100%; width: 0%;
-      background: var(--green);
-      box-shadow: 0 0 12px var(--green-glow);
-      animation: loadBar 1.2s ease forwards;
-    }
-    @keyframes loadBar { to { width: 100%; } }
-    .preloader-text {
-      font-family: var(--mono); font-size: 11px; color: var(--muted);
-      letter-spacing: 0.15em; text-transform: uppercase;
-    }
-
-    /* ===== HEADER ===== */
+    /* Header */
     header {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-      border-bottom: 1px solid var(--border);
-      background: rgba(10, 10, 26, 0.82);
-      backdrop-filter: blur(16px);
-      transition: transform 0.3s ease, background 0.3s ease;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(250,250,250,0.82);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
     }
-    header.hide { transform: translateY(-100%); }
-    header.scrolled { background: rgba(10, 10, 26, 0.95); border-color: rgba(255,255,255,0.06); }
+    header.scrolled { border-color: var(--border); background: rgba(250,250,250,0.96); }
 
     .nav {
       display: flex; align-items: center; justify-content: space-between;
-      min-height: 64px; gap: 16px;
+      min-height: 68px; gap: 20px;
     }
-    .mark {
-      display: inline-flex; align-items: center; gap: 10px;
-      font-weight: 800; font-size: 15px; letter-spacing: -0.01em;
+    .brand {
+      font-size: 15px; font-weight: 600; letter-spacing: -0.01em;
+      display: flex; align-items: baseline; gap: 6px;
     }
-    .mark-symbol {
-      width: 32px; height: 32px; border-radius: 9px;
-      display: grid; place-items: center;
-      background: var(--green); color: var(--bg);
-      font-size: 13px; font-weight: 900;
-      box-shadow: 0 0 18px var(--green-glow);
-    }
+    .brand span { color: var(--text-secondary); font-weight: 500; }
 
     .desktop-nav {
-      display: flex; align-items: center; gap: 24px;
-      font-size: 14px; color: var(--muted);
+      display: flex; align-items: center; gap: 28px;
+      font-size: 14px; color: var(--text-secondary);
     }
-    .desktop-nav a { position: relative; transition: color 0.2s; }
-    .desktop-nav a::after {
-      content: ''; position: absolute; bottom: -4px; left: 0;
-      width: 0; height: 2px; background: var(--green);
-      border-radius: 2px; transition: width 0.25s ease;
-    }
+    .desktop-nav a { transition: color 0.2s; }
     .desktop-nav a:hover { color: var(--text); }
-    .desktop-nav a:hover::after { width: 100%; }
-    .nav-cta {
-      display: inline-flex; align-items: center; justify-content: center;
-      min-height: 36px; padding: 0 16px; border-radius: 8px;
-      background: var(--green); color: var(--bg);
-      font-weight: 700; font-size: 13px;
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 0 20px var(--green-glow); }
+    .desktop-nav a.active { color: var(--text); font-weight: 500; }
 
-    /* Mobile nav */
     .menu-toggle {
       display: none; width: 36px; height: 36px;
       border: 1px solid var(--border); border-radius: 8px;
-      background: transparent; cursor: pointer;
+      background: var(--surface); cursor: pointer;
       flex-direction: column; align-items: center; justify-content: center; gap: 5px;
     }
     .menu-toggle span {
-      display: block; width: 18px; height: 2px; background: var(--text);
-      border-radius: 2px; transition: transform 0.25s, opacity 0.25s;
+      display: block; width: 16px; height: 1.5px; background: var(--text);
+      border-radius: 1px; transition: transform 0.25s, opacity 0.25s;
     }
-    .menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
     .menu-toggle.open span:nth-child(2) { opacity: 0; }
-    .menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .menu-toggle.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
     .mobile-nav {
-      position: fixed; inset: 64px 0 0 0; z-index: 49;
-      background: rgba(10, 10, 26, 0.98); backdrop-filter: blur(20px);
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px;
-      font-size: 20px; font-weight: 600;
-      opacity: 0; pointer-events: none; transform: translateY(-10px);
+      position: fixed; inset: 68px 0 0 0; z-index: 99;
+      background: rgba(250,250,250,0.98); backdrop-filter: blur(20px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
+      font-size: 18px; font-weight: 500;
+      opacity: 0; pointer-events: none; transform: translateY(-8px);
       transition: opacity 0.3s, transform 0.3s;
     }
     .mobile-nav.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
-    .mobile-nav a { color: var(--muted); transition: color 0.2s; }
-    .mobile-nav a:hover { color: var(--green); }
+    .mobile-nav a { color: var(--text-secondary); }
+    .mobile-nav a:hover { color: var(--text); }
 
-    /* ===== BUTTONS ===== */
-    .button {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      min-height: 46px; padding: 0 22px; border-radius: 10px;
-      border: 1px solid var(--green); background: var(--green); color: var(--bg);
-      font-weight: 700; font-size: 15px;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      cursor: pointer;
-    }
-    .button:hover { transform: translateY(-1px); box-shadow: 0 0 24px var(--green-glow); }
-    .button.secondary {
-      background: transparent; color: var(--green);
-      border-color: rgba(0, 230, 118, 0.45);
-    }
-    .button.secondary:hover { background: rgba(0, 230, 118, 0.08); box-shadow: 0 0 18px var(--green-glow); }
-
-    /* ===== HERO ===== */
+    /* Hero */
     .hero {
-      position: relative; overflow: hidden;
+      padding: 160px 0 100px;
       border-bottom: 1px solid var(--border);
-      min-height: 100vh; display: flex; align-items: center;
-    }
-    #hero-canvas {
-      position: absolute; inset: 0; z-index: 0;
-      opacity: 0.6;
-    }
-    .hero::after {
-      content: ''; position: absolute; inset: 0; z-index: 1;
-      background: radial-gradient(ellipse at center, rgba(10,10,26,0.3) 0%, rgba(10,10,26,0.85) 70%, rgba(10,10,26,0.98) 100%);
+      position: relative;
+      overflow: hidden;
     }
     .hero-grid {
-      position: relative; z-index: 2;
-      display: grid; grid-template-columns: 1.1fr 0.9fr;
-      gap: 48px; align-items: center;
-      padding: 120px 0 80px;
+      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 64px; align-items: center;
     }
-
     .eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
-      color: var(--green); font-family: var(--mono);
-      font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+      font-family: var(--mono); font-size: 12px; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-secondary);
+      margin-bottom: 20px;
     }
     .eyebrow::before {
-      content: ''; width: 7px; height: 7px; border-radius: 50%;
-      background: var(--green); box-shadow: 0 0 10px var(--green);
-      animation: pulse 2s ease-in-out infinite;
+      content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--text);
     }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-
     h1 {
-      margin: 18px 0 0;
-      font-size: clamp(42px, 6.5vw, 84px);
-      line-height: 0.96; font-weight: 800; letter-spacing: -0.03em;
+      font-size: clamp(42px, 6vw, 72px); line-height: 1.05;
+      font-weight: 600; letter-spacing: -0.03em; margin-bottom: 24px;
     }
     .hero-copy {
-      margin-top: 22px; max-width: 540px;
-      color: var(--muted);
-      font-size: clamp(17px, 1.9vw, 20px); line-height: 1.6;
+      font-size: clamp(17px, 2vw, 20px); line-height: 1.6;
+      color: var(--text-secondary); max-width: 520px;
     }
-    .hero-actions {
-      display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px;
-    }
+    .hero-actions { display: flex; gap: 14px; margin-top: 36px; flex-wrap: wrap; }
 
-    .mascot-wrap { display: grid; place-items: center; }
-    .mascot {
-      width: min(300px, 72vw); height: auto;
-      filter: drop-shadow(0 0 40px rgba(0, 230, 118, 0.2));
-      animation: float 6s ease-in-out infinite;
+    .button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 22px; border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 600;
+      transition: transform 0.15s, background 0.2s, border-color 0.2s, box-shadow 0.2s;
+      border: 1px solid var(--accent); background: var(--accent); color: #fff;
+      cursor: pointer;
     }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
+    .button:hover { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+    .button.secondary {
+      background: transparent; color: var(--text);
+      border-color: var(--border-strong);
     }
+    .button.secondary:hover { background: var(--surface-2); border-color: var(--border-strong); }
 
-    /* Typewriter */
-    .typewriter { overflow: hidden; white-space: nowrap; border-right: 2px solid var(--green); animation: typing 2s steps(30) forwards, blink 0.8s step-end infinite; }
-    @keyframes typing { from { width: 0 } to { width: 100% } }
-    @keyframes blink { 50% { border-color: transparent } }
-
-    /* ===== MARQUEE ===== */
-    .marquee-band {
-      border-bottom: 1px solid var(--border);
-      background: var(--bg-elev);
-      overflow: hidden; padding: 18px 0;
+    .hero-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 28px; box-shadow: var(--shadow-lg);
     }
-    .marquee-track {
-      display: flex; gap: 48px;
-      animation: marquee 25s linear infinite;
-      width: max-content;
+    .hero-card h3 {
+      font-size: 13px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-secondary); margin-bottom: 20px;
     }
-    .marquee-track:hover { animation-play-state: paused; }
-    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    .marquee-item {
+    .research-list { display: flex; flex-direction: column; gap: 14px; }
+    .research-item {
       display: flex; align-items: center; gap: 12px;
-      font-family: var(--mono); font-size: 13px; color: var(--muted);
-      white-space: nowrap;
+      padding: 14px; border-radius: var(--radius-sm);
+      background: var(--surface-2); transition: background 0.2s;
     }
-    .marquee-item strong { color: var(--green); font-weight: 700; }
-    .marquee-dot {
-      width: 6px; height: 6px; border-radius: 50%; background: var(--green);
-      box-shadow: 0 0 8px var(--green); flex-shrink: 0;
+    .research-item:hover { background: var(--accent-soft); }
+    .research-item .icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: grid; place-items: center; font-size: 15px;
+      background: var(--surface); border: 1px solid var(--border);
     }
+    .research-item div { font-size: 14px; font-weight: 500; }
+    .research-item div span { display: block; font-size: 12px; color: var(--text-secondary); font-weight: 400; }
 
-    /* ===== SCROLL REVEAL ===== */
-    .reveal {
-      opacity: 0; transform: translateY(40px);
-      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    /* Categories */
+    .categories {
+      padding: 40px 0; border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky; top: 68px; z-index: 50;
     }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
+    .category-list {
+      display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;
+    }
+    .category-list::-webkit-scrollbar { display: none; }
+    .category-pill {
+      padding: 8px 16px; border-radius: 99px; white-space: nowrap;
+      font-size: 13px; font-weight: 500; color: var(--text-secondary);
+      border: 1px solid var(--border); background: var(--surface);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .category-pill:hover { border-color: var(--border-strong); color: var(--text); }
+    .category-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-    /* ===== SECTIONS ===== */
-    section {
-      padding: 80px 0;
-      border-bottom: 1px solid var(--border);
+    /* Sections */
+    section { padding: 80px 0; border-bottom: 1px solid var(--border); }
+    .section-head {
+      display: flex; justify-content: space-between; align-items: flex-end; gap: 24px;
+      margin-bottom: 40px; flex-wrap: wrap;
     }
     h2 {
-      margin: 0;
-      font-size: clamp(30px, 3.8vw, 48px);
-      line-height: 1.05; font-weight: 800; letter-spacing: -0.02em;
+      font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1;
+      font-weight: 600; letter-spacing: -0.02em;
     }
-    .section-head { margin-bottom: 40px; }
     .section-head p {
-      margin-top: 14px; max-width: 620px;
-      color: var(--muted); font-size: 17px; line-height: 1.6;
+      color: var(--text-secondary); font-size: 16px; max-width: 460px; margin-top: 10px;
     }
+    .view-all {
+      font-size: 14px; font-weight: 500; color: var(--link);
+      display: flex; align-items: center; gap: 4px;
+    }
+    .view-all:hover { text-decoration: underline; }
 
-    /* ===== ARTIFACTS ===== */
-    .artifact-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
+    /* Paper cards */
+    .papers-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
     }
-    .artifact {
-      position: relative; display: flex; flex-direction: column; gap: 14px;
-      min-height: 170px; padding: 24px;
-      border: 1px solid var(--border); border-radius: var(--radius);
-      background: var(--panel);
-      transition: border-color 0.2s, transform 0.2s, background 0.2s, box-shadow 0.2s;
+    .paper-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 28px; transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+      display: flex; flex-direction: column; gap: 16px;
     }
-    .artifact:hover {
-      border-color: rgba(0, 230, 118, 0.35);
-      background: var(--panel-strong);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 20px rgba(0,230,118,0.08);
+    .paper-card:hover {
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
     }
-    .artifact b {
-      display: flex; align-items: center; gap: 8px;
-      color: var(--green); font-family: var(--mono);
-      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    .paper-meta {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
     }
-    .artifact h3 { margin: 0; font-size: 20px; line-height: 1.15; font-weight: 700; }
-    .artifact p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
-    .artifact .link {
-      margin-top: auto; padding-top: 14px;
-      display: flex; align-items: center; gap: 6px;
-      color: var(--green); font-weight: 600; font-size: 14px;
+    .paper-category {
+      font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 4px 10px; border-radius: 6px; background: var(--surface-2); color: var(--text-secondary);
     }
-    .artifact .link::after { content: "→"; transition: transform 0.15s ease; }
-    .artifact:hover .link::after { transform: translateX(4px); }
-    .artifact-tag {
-      position: absolute; top: 16px; right: 16px;
-      padding: 4px 10px; border-radius: 6px;
-      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    .paper-date { font-size: 13px; color: var(--text-tertiary); }
+    .paper-card h3 {
+      font-size: 19px; line-height: 1.25; font-weight: 600;
     }
-    .tag-live { background: rgba(0,230,118,0.12); color: var(--green); }
-    .tag-beta { background: rgba(0,176,255,0.12); color: var(--blue); }
-    .tag-alpha { background: rgba(167,139,250,0.12); color: #a78bfa; }
+    .paper-card p {
+      font-size: 14px; line-height: 1.6; color: var(--text-secondary);
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .paper-card .authors {
+      font-size: 13px; color: var(--text-tertiary); margin-top: auto; padding-top: 8px;
+    }
+    .paper-card .actions {
+      display: flex; gap: 12px; margin-top: 4px;
+    }
+    .paper-card .actions a {
+      font-size: 13px; font-weight: 600; color: var(--link);
+      display: flex; align-items: center; gap: 4px;
+    }
+    .paper-card .actions a:hover { text-decoration: underline; }
 
-    /* ===== DEMO ===== */
-    .demo { background: var(--bg-elev); }
-    .demo-frame {
-      border: 1px solid var(--border); border-radius: var(--radius);
-      background: var(--panel); overflow: hidden;
+    /* Empty state */
+    .empty-state {
+      text-align: center; padding: 80px 20px; color: var(--text-secondary);
     }
-    .demo-top {
-      display: flex; align-items: center; justify-content: space-between; gap: 16px;
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(0,0,0,0.18);
-    }
-    .demo-top span {
-      font-family: var(--mono); font-size: 12px; font-weight: 700;
-      color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;
-    }
-    .demo-status {
-      display: inline-flex; align-items: center; gap: 6px;
-      color: var(--green); font-size: 12px; font-weight: 700;
-    }
-    .demo-status::before {
-      content: ''; width: 7px; height: 7px; border-radius: 50%;
-      background: var(--green); box-shadow: 0 0 8px var(--green);
-      animation: pulse 2s ease-in-out infinite;
-    }
-    .demo-body {
-      display: grid; grid-template-columns: minmax(280px, 0.42fr) 1fr;
-      gap: 28px; padding: 26px;
-    }
-    .controls { display: grid; gap: 22px; }
-    .control label {
-      display: flex; justify-content: space-between; gap: 12px;
-      font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 10px;
-    }
-    .control label strong { color: var(--text); }
-    .control input[type="range"] {
-      width: 100%; height: 6px; appearance: none;
-      border-radius: 999px; background: rgba(255,255,255,0.10); outline: none;
-    }
-    .control input[type="range"]::-webkit-slider-thumb {
-      appearance: none; width: 18px; height: 18px; border-radius: 50%;
-      background: var(--green); box-shadow: 0 0 12px var(--green-glow); cursor: pointer;
-      transition: transform 0.15s;
-    }
-    .control input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
-    .control input[type="range"]::-moz-range-thumb {
-      width: 18px; height: 18px; border: 0; border-radius: 50%;
-      background: var(--green); box-shadow: 0 0 12px var(--green-glow); cursor: pointer;
-    }
-    .income-value { font-family: var(--mono); color: var(--green); font-weight: 700; }
-    .readout { display: grid; gap: 16px; }
-    .bucket {
-      padding: 18px; border: 1px solid var(--border); border-radius: 12px;
-      background: rgba(0,0,0,0.22);
-    }
-    .bucket-head { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-    .bucket-title { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; }
-    .dot { width: 10px; height: 10px; border-radius: 50%; }
-    .dot.needs { background: var(--green); }
-    .dot.wants { background: var(--blue); }
-    .dot.savings { background: #a78bfa; }
-    .bucket-amount { font-family: var(--mono); font-weight: 700; font-size: 15px; }
-    .bar { height: 10px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
-    .bar > i { display: block; height: 100%; border-radius: 999px; transition: width 0.2s ease; }
-    .bar.needs > i { background: var(--green); box-shadow: 0 0 12px var(--green-glow); }
-    .bar.wants > i { background: var(--blue); }
-    .bar.savings > i { background: #a78bfa; }
-    .bucket-note { margin-top: 10px; font-size: 12px; color: var(--muted); }
-    .guardrail {
-      margin-top: 18px; padding: 14px 16px;
-      border-left: 3px solid var(--green); border-radius: 0 10px 10px 0;
-      background: rgba(0,230,118,0.06); color: var(--muted);
-      font-size: 13px; line-height: 1.55;
-      transition: border-color 0.3s, background 0.3s;
-    }
+    .empty-state h3 { color: var(--text); font-weight: 600; margin-bottom: 8px; }
 
-    /* ===== PROTOCOL ===== */
-    .protocol {
-      display: grid; grid-template-columns: minmax(0,0.55fr) minmax(0,0.45fr);
-      gap: 34px; align-items: center;
+    /* About */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;
     }
-    .protocol-visual {
-      min-height: 340px; border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background:
-        linear-gradient(180deg, rgba(10,10,26,0.78) 0%, rgba(10,10,26,0.92) 100%),
-        url("assets/lab-hero.png");
-      background-size: cover; background-position: center;
-      position: relative; overflow: hidden;
+    .about-text { color: var(--text-secondary); font-size: 16px; line-height: 1.7; }
+    .about-text p + p { margin-top: 16px; }
+    .stats {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
     }
-    .protocol-visual::after {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(circle at 50% 50%, rgba(0,230,118,0.06) 0%, transparent 70%);
+    .stat {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px; text-align: center;
     }
-    .protocol-list { display: grid; gap: 20px; }
-    .protocol-list li {
-      display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;
-      color: var(--muted); font-size: 15px; line-height: 1.55;
+    .stat-value {
+      font-size: 32px; font-weight: 600; letter-spacing: -0.02em; color: var(--text);
     }
-    .protocol-list b { color: var(--text); }
-    .num {
-      display: grid; place-items: center;
-      width: 32px; height: 32px; border-radius: 50%;
-      background: rgba(0,230,118,0.12); color: var(--green);
-      font-family: var(--mono); font-weight: 700; font-size: 12px;
-    }
-    .safety {
-      margin-top: 28px; padding: 16px;
-      border: 1px solid var(--border); border-radius: 12px;
-      background: var(--panel); color: var(--muted);
-      font-size: 13px; line-height: 1.55;
-    }
-    .safety strong { color: var(--text); }
+    .stat-label { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
 
-    /* ===== NEWSLETTER ===== */
-    .newsletter {
-      background: var(--bg-elev);
+    /* CTA */
+    .cta {
+      background: var(--surface); text-align: center;
     }
-    .newsletter-inner {
-      max-width: 640px; margin: 0 auto; text-align: center;
-    }
-    .newsletter h2 { margin-bottom: 12px; }
-    .newsletter p { color: var(--muted); font-size: 17px; line-height: 1.6; margin-bottom: 28px; }
-    .newsletter-form {
-      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
-    }
-    .newsletter-form input {
-      flex: 1; min-width: 260px; max-width: 360px;
-      padding: 14px 18px; border-radius: 10px;
-      border: 1px solid var(--border); background: rgba(0,0,0,0.25);
-      color: var(--text); font-size: 15px; outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .newsletter-form input:focus {
-      border-color: rgba(0,230,118,0.4);
-      box-shadow: 0 0 0 3px rgba(0,230,118,0.08);
-    }
-    .newsletter-form input::placeholder { color: var(--muted); }
-    .newsletter-form button {
-      padding: 14px 24px; border-radius: 10px; border: 1px solid var(--green);
-      background: var(--green); color: var(--bg);
-      font-weight: 700; font-size: 15px; cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    .newsletter-form button:hover { transform: translateY(-1px); box-shadow: 0 0 24px var(--green-glow); }
-    .newsletter-status {
-      margin-top: 16px; font-size: 14px; min-height: 20px;
-    }
-    .newsletter-status.success { color: var(--green); }
-    .newsletter-status.error { color: var(--red); }
+    .cta-inner { max-width: 620px; margin: 0 auto; }
+    .cta h2 { margin-bottom: 14px; }
+    .cta p { color: var(--text-secondary); font-size: 17px; margin-bottom: 28px; }
 
-    /* ===== CTA BAND ===== */
-    .cta-band { text-align: center; border-bottom: 0; }
-    .cta-band h2 { margin: 0 auto; max-width: 600px; }
-    .cta-band p {
-      margin: 14px auto 0; max-width: 600px;
-      color: var(--muted); font-size: 17px; line-height: 1.6;
-    }
-    .cta-actions {
-      display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 28px;
-    }
-
-    /* ===== FOOTER ===== */
-    footer {
-      padding: 40px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px;
-    }
+    /* Footer */
+    footer { padding: 48px 0; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 13px; }
     .footer-grid {
-      display: grid; grid-template-columns: 1fr auto auto auto; gap: 40px; align-items: start;
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; flex-wrap: wrap;
     }
-    .footer-brand { max-width: 280px; }
-    .footer-brand .mark { margin-bottom: 12px; }
-    .footer-brand p { font-size: 13px; line-height: 1.6; color: var(--muted); }
-    .footer-col h4 {
-      font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
-      color: var(--text); margin-bottom: 14px;
-    }
-    .footer-col a {
-      display: block; color: var(--muted); font-size: 13px; margin-bottom: 8px;
-      transition: color 0.2s;
-    }
-    .footer-col a:hover { color: var(--green); }
+    .footer-brand { max-width: 300px; }
+    .footer-brand .brand { margin-bottom: 10px; }
+    .footer-links { display: flex; gap: 40px; }
+    .footer-links div { display: flex; flex-direction: column; gap: 8px; }
+    .footer-links strong { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); margin-bottom: 4px; }
+    .footer-links a:hover { color: var(--text); }
     .footer-bottom {
-      margin-top: 32px; padding-top: 24px;
-      border-top: 1px solid var(--border);
+      margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);
       display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
     }
-    .socials { display: flex; gap: 14px; }
-    .socials a {
-      width: 36px; height: 36px; border-radius: 8px;
-      border: 1px solid var(--border); display: grid; place-items: center;
-      color: var(--muted); transition: color 0.2s, border-color 0.2s, background 0.2s;
-    }
-    .socials a:hover { color: var(--green); border-color: rgba(0,230,118,0.3); background: rgba(0,230,118,0.05); }
 
-    /* ===== RESPONSIVE ===== */
+    /* Loading skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, var(--surface-2) 25%, var(--border) 50%, var(--surface-2) 75%);
+      background-size: 200% 100%; animation: shimmer 1.5s infinite;
+      border-radius: 6px;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
     @media (max-width: 900px) {
       .desktop-nav { display: none; }
       .menu-toggle { display: flex; }
-      .hero-grid, .artifact-grid, .demo-body, .protocol, .footer-grid {
-        grid-template-columns: 1fr;
-      }
-      .hero-grid { padding: 100px 0 60px; }
-      .mascot-wrap { order: -1; }
-      .mascot { width: min(200px, 55vw); }
-      .protocol-visual { min-height: 220px; }
-      .footer-grid { gap: 28px; }
+      .hero-grid, .about-grid { grid-template-columns: 1fr; }
+      .hero { padding: 130px 0 70px; }
+      .papers-grid { grid-template-columns: 1fr; }
+      .section-head { flex-direction: column; align-items: flex-start; }
+      .categories { top: 68px; }
     }
     @media (max-width: 560px) {
-      .shell { width: min(100% - 20px, 1200px); }
-      section { padding: 56px 0; }
-      .artifact { padding: 18px; min-height: auto; }
-      .demo-body { padding: 18px; }
-      .newsletter-form input { min-width: 100%; }
+      .shell { width: min(100% - 24px, 1100px); }
+      h1 { font-size: 36px; }
+      .hero-card { padding: 20px; }
+      .stats { grid-template-columns: 1fr; }
+      .footer-links { flex-direction: column; gap: 24px; }
     }
   </style>
 </head>
 <body>
 
-<!-- Preloader -->
-<div id="preloader">
-  <div class="preloader-inner">
-    <div class="preloader-bar"><i></i></div>
-    <div class="preloader-text">Initializing MoneyBot Lab</div>
-  </div>
-</div>
-
-<!-- Header -->
 <header id="site-header">
   <div class="shell nav">
-    <a class="mark" href="#top" aria-label="MoneyBot Labs home">
-      <span class="mark-symbol">MB</span>
-      <span>MoneyBot Labs</span>
-    </a>
+    <a class="brand" href="/">MoneyBot <span>Lab</span></a>
     <nav class="desktop-nav">
-      <a href="#artifacts">Live builds</a>
-      <a href="#demo">Demo</a>
-      <a href="#protocol">Protocol</a>
-      <a href="#newsletter">Newsletter</a>
-      <a class="nav-cta" href="#connect">Collaborate</a>
+      <a href="#papers" class="active">Research</a>
+      <a href="#about">About</a>
+      <a href="#collaborate">Collaborate</a>
+      <a href="/admin.html" style="color:var(--text-tertiary)">Admin</a>
     </nav>
-    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
   </div>
 </header>
 
-<!-- Mobile nav -->
 <div class="mobile-nav" id="mobile-nav">
-  <a href="#artifacts">Live builds</a>
-  <a href="#demo">Demo</a>
-  <a href="#protocol">Protocol</a>
-  <a href="#newsletter">Newsletter</a>
-  <a href="#connect" style="color:var(--green)">Collaborate</a>
+  <a href="#papers">Research</a>
+  <a href="#about">About</a>
+  <a href="#collaborate">Collaborate</a>
+  <a href="/admin.html">Admin</a>
 </div>
 
-<main id="top">
-
-<!-- Hero -->
-<section class="hero" aria-labelledby="hero-title">
-  <canvas id="hero-canvas"></canvas>
-  <div class="shell hero-grid">
-    <div class="reveal">
-      <span class="eyebrow">AI experiments for financial education</span>
-      <h1 id="hero-title">MoneyBot Labs</h1>
-      <p class="hero-copy">A research surface for playable money experiments: games, simulators, and AI interfaces that make financial skills easier to learn, practice, and remember.</p>
-      <div class="hero-actions">
-        <a class="button" href="#demo">Try the demo</a>
-        <a class="button secondary" href="mailto:hello@getmoneybot.com?subject=MoneyBot%20Labs">Collaborate</a>
-      </div>
-    </div>
-    <div class="mascot-wrap reveal reveal-delay-2" aria-hidden="true">
-      <svg class="mascot" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="3.5" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#e0e2f0"/>
-          </linearGradient>
-          <linearGradient id="screenGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#0f1426"/><stop offset="100%" stop-color="#050712"/>
-          </linearGradient>
-        </defs>
-        <line x1="100" y1="38" x2="100" y2="18" stroke="#d0d4e8" stroke-width="5" stroke-linecap="round"/>
-        <circle cx="100" cy="14" r="7" fill="#00E676" filter="url(#glow)"/>
-        <rect x="54" y="40" width="92" height="74" rx="22" fill="url(#bodyGrad)"/>
-        <rect x="64" y="54" width="72" height="46" rx="14" fill="url(#screenGrad)"/>
-        <circle cx="84" cy="70" r="7" fill="#00E676" filter="url(#glow)"/>
-        <circle cx="116" cy="70" r="7" fill="#00E676" filter="url(#glow)"/>
-        <path d="M60 110 L44 180 C42 190 50 198 60 198 L140 198 C150 198 158 190 156 180 L140 110 Z" fill="url(#bodyGrad)"/>
-        <rect x="78" y="132" width="44" height="44" rx="12" fill="#0a0f22" stroke="rgba(0,230,118,0.35)" stroke-width="2"/>
-        <path d="M88 154 L100 166 L112 146" stroke="#00E676" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#glow)"/>
-        <path d="M56 120 L32 154" stroke="#e0e2f0" stroke-width="14" stroke-linecap="round"/>
-        <path d="M144 120 L168 154" stroke="#e0e2f0" stroke-width="14" stroke-linecap="round"/>
-        <circle cx="30" cy="158" r="10" fill="#ffffff"/>
-        <circle cx="170" cy="158" r="10" fill="#ffffff"/>
-      </svg>
-    </div>
-  </div>
-</section>
-
-<!-- Marquee -->
-<div class="marquee-band">
-  <div class="marquee-track" id="marquee">
-    <div class="marquee-item"><span class="marquee-dot"></span><strong>12+</strong> Research papers published</div>
-    <div class="marquee-item"><span class="marquee-dot"></span><strong>8</strong> Tools shipped</div>
-    <div class="marquee-item"><span class="marquee-dot"></span><strong>47</strong> Experiments run</div>
-    <div class="marquee-item"><span class="marquee-dot"></span><strong>2,400+</strong> Lab members</div>
-    <div class="marquee-item"><span class="marquee-dot"></span><strong>$0</strong> Cost to play</div>
-    <div class="marquee-item"><span class="marquee-dot"></span><strong>Open</strong> Source</div>
-    <div class="marquee-item"><span class="marquee-dot"></span><strong>12+</strong> Research papers published</div>
-    <div class="marquee-item"><span class="marquee-dot"></span><strong>8</strong> Tools shipped</div>
-    <div class="marquee-item"><span class="marquee-dot"></span><strong>47</strong> Experiments run</div>
-    <div class="marquee-item"><span class="marquee-dot"></span><strong>2,400+</strong> Lab members</div>
-    <div class="marquee-item"><span class="marquee-dot"></span><strong>$0</strong> Cost to play</div>
-    <div class="marquee-item"><span class="marquee-dot"></span><strong>Open</strong> Source</div>
-  </div>
-</div>
-
-<!-- Artifacts -->
-<section id="artifacts">
-  <div class="shell">
-    <div class="section-head reveal">
-      <span class="eyebrow">Live artifacts</span>
-      <h2>Real builds you can open now.</h2>
-      <p>These are working MoneyBot experiments, not concept slides. Each one ships as a playable surface.</p>
-    </div>
-    <div class="artifact-grid">
-      <a class="artifact reveal reveal-delay-1" href="https://moneybotgames.com/moneybot-official/" target="_blank" rel="noopener">
-        <span class="artifact-tag tag-live">Live</span>
-        <b>Arcade Hub</b>
-        <h3>MoneyBot Arcade</h3>
-        <p>The central hub for MoneyBot games and experiments. Play, learn, compete.</p>
-        <span class="link">Open the arcade</span>
-      </a>
-      <a class="artifact reveal reveal-delay-2" href="https://moneybotgames.com/apps/speaking-mastery/" target="_blank" rel="noopener">
-        <span class="artifact-tag tag-live">Live</span>
-        <b>Speaking Lab</b>
-        <h3>Speaking Mastery</h3>
-        <p>Practice financial conversations with an AI speaking coach.</p>
-        <span class="link">Try Speaking Mastery</span>
-      </a>
-      <a class="artifact reveal reveal-delay-1" href="https://moneybotgames.com/games/runway-rush/" target="_blank" rel="noopener">
-        <span class="artifact-tag tag-live">Live</span>
-        <b>Runway Game</b>
-        <h3>Burn Rate / Runway Rush</h3>
-        <p>A founder finance survival game about burn, runway, and cash timing.</p>
-        <span class="link">Play Runway Rush</span>
-      </a>
-      <a class="artifact reveal reveal-delay-2" href="https://moneybotgames.com/games/cashflow-runner/" target="_blank" rel="noopener">
-        <span class="artifact-tag tag-live">Live</span>
-        <b>Cashflow Game</b>
-        <h3>Cashflow Runner</h3>
-        <p>Learn income, expenses, and cashflow rhythm through play.</p>
-        <span class="link">Play Cashflow Runner</span>
-      </a>
-      <a class="artifact reveal reveal-delay-3" href="https://moneybotgames.com/games/portfolio-balancer/" target="_blank" rel="noopener">
-        <span class="artifact-tag tag-beta">Beta</span>
-        <b>Portfolio Game</b>
-        <h3>Portfolio Balancer</h3>
-        <p>Balance risk and reward across asset classes in real-time.</p>
-        <span class="link">Play Portfolio Balancer</span>
-      </a>
-      <a class="artifact reveal reveal-delay-4" href="https://moneybotgames.com/games/compound-2048/" target="_blank" rel="noopener">
-        <span class="artifact-tag tag-beta">Beta</span>
-        <b>Compounding Game</b>
-        <h3>Compound 2048</h3>
-        <p>Visualize compound growth through a familiar tile-merging mechanic.</p>
-        <span class="link">Play Compound 2048</span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- Demo -->
-<section id="demo" class="demo">
-  <div class="shell">
-    <div class="section-head reveal">
-      <span class="eyebrow">Interactive demo</span>
-      <h2>Budget simulator.</h2>
-      <p>Move the income slider, then adjust how you split needs, wants, and savings. The math updates instantly.</p>
-    </div>
-    <div class="demo-frame reveal reveal-delay-1">
-      <div class="demo-top">
-        <span>moneybot-labs / budget-sim v1</span>
-        <span class="demo-status">Live</span>
-      </div>
-      <div class="demo-body">
-        <div class="controls">
-          <div class="control">
-            <label>Monthly income <strong class="income-value" id="income-display">$3,000</strong></label>
-            <input type="range" id="income" min="500" max="6000" step="50" value="3000" aria-label="Monthly income">
-          </div>
-          <div class="control">
-            <label>Needs <strong id="needs-pct">50%</strong></label>
-            <input type="range" id="needs" min="0" max="100" step="1" value="50" aria-label="Needs percentage">
-          </div>
-          <div class="control">
-            <label>Wants <strong id="wants-pct">30%</strong></label>
-            <input type="range" id="wants" min="0" max="100" step="1" value="30" aria-label="Wants percentage">
-          </div>
-          <div class="control">
-            <label>Savings <strong id="savings-pct">20%</strong></label>
-            <input type="range" id="savings" min="0" max="100" step="1" value="20" aria-label="Savings percentage">
-          </div>
+<main>
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <div class="eyebrow">Applied Research Studio</div>
+        <h1>Research at the edge of technology and human behavior.</h1>
+        <p class="hero-copy">
+          MoneyBot Lab publishes original research and builds experiments across four verticals:
+          education technology, financial technology, media technology, and immersive technology.
+        </p>
+        <div class="hero-actions">
+          <a class="button" href="#papers">Browse research</a>
+          <a class="button secondary" href="#collaborate">Work with us</a>
         </div>
-        <div class="readout">
-          <div class="bucket">
-            <div class="bucket-head">
-              <span class="bucket-title"><span class="dot needs"></span> Needs</span>
-              <span class="bucket-amount" id="needs-amount">$1,500</span>
-            </div>
-            <div class="bar needs"><i id="needs-bar" style="width: 50%"></i></div>
-            <div class="bucket-note">Rent, groceries, utilities, minimum debt payments.</div>
+      </div>
+      <div class="hero-card">
+        <h3>Research verticals</h3>
+        <div class="research-list">
+          <div class="research-item">
+            <div class="icon">🎓</div>
+            <div>EdTech <span>Adaptive learning, AI tutors, skill acquisition</span></div>
           </div>
-          <div class="bucket">
-            <div class="bucket-head">
-              <span class="bucket-title"><span class="dot wants"></span> Wants</span>
-              <span class="bucket-amount" id="wants-amount">$900</span>
-            </div>
-            <div class="bar wants"><i id="wants-bar" style="width: 30%"></i></div>
-            <div class="bucket-note">Dining out, subscriptions, entertainment, travel.</div>
+          <div class="research-item">
+            <div class="icon">💰</div>
+            <div>FinTech <span>Behavioral finance, programmable capital, inclusion</span></div>
           </div>
-          <div class="bucket">
-            <div class="bucket-head">
-              <span class="bucket-title"><span class="dot savings"></span> Savings</span>
-              <span class="bucket-amount" id="savings-amount">$600</span>
-            </div>
-            <div class="bar savings"><i id="savings-bar" style="width: 20%"></i></div>
-            <div class="bucket-note">Emergency fund, retirement, extra debt payoff.</div>
+          <div class="research-item">
+            <div class="icon">📡</div>
+            <div>MediaTech <span>Generative media, distribution, attention systems</span></div>
           </div>
-          <div class="guardrail" id="guardrail">
-            <strong>50/30/20 rule of thumb.</strong> This demo is for education only. Your real budget depends on your location, obligations, and goals.
+          <div class="research-item">
+            <div class="icon">🥽</div>
+            <div>ImmersiveTech <span>Spatial computing, simulation, embodied cognition</span></div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Protocol -->
-<section id="protocol">
-  <div class="shell protocol">
-    <div class="protocol-visual reveal" role="img" aria-label="MoneyBot Lab terminal environment"></div>
-    <div class="reveal reveal-delay-1">
-      <span class="eyebrow">Lab protocol</span>
-      <h2>Every demo has receipts.</h2>
-      <ul class="protocol-list">
-        <li><span class="num">1</span><span><b>Question.</b> Start with a financial skill that is hard to teach, practice, or remember.</span></li>
-        <li><span class="num">2</span><span><b>Prototype.</b> Ship the smallest playable demo that makes the learning loop observable.</span></li>
-        <li><span class="num">3</span><span><b>Publish.</b> Share the build, the safety limits, and what still needs to be true.</span></li>
-        <li><span class="num">4</span><span><b>Measure.</b> Track clarity, completion, and where the model or design still fails.</span></li>
-      </ul>
-      <div class="safety">
-        <strong>Education and simulation only.</strong> MoneyBot Labs does not provide personalized investment, tax, or legal advice. The games and demos use fictional scenarios and simplified math for learning purposes.
+  <div class="categories" id="categories">
+    <div class="shell">
+      <div class="category-list">
+        <button class="category-pill active" data-category="all">All Research</button>
+        <button class="category-pill" data-category="EdTech">EdTech</button>
+        <button class="category-pill" data-category="FinTech">FinTech</button>
+        <button class="category-pill" data-category="MediaTech">MediaTech</button>
+        <button class="category-pill" data-category="ImmersiveTech">ImmersiveTech</button>
       </div>
     </div>
   </div>
-</section>
 
-<!-- Newsletter -->
-<section id="newsletter" class="newsletter">
-  <div class="shell">
-    <div class="newsletter-inner reveal">
-      <span class="eyebrow">Stay in the loop</span>
-      <h2>Join the Lab.</h2>
-      <p>Get new experiments, research, and playable builds delivered to your inbox. No fluff. No spam. Just signal.</p>
-      <form class="newsletter-form" id="newsletter-form" onsubmit="handleNewsletter(event)">
-        <input type="email" id="email" placeholder="you@example.com" required>
-        <button type="submit">Subscribe</button>
-      </form>
-      <div class="newsletter-status" id="newsletter-status"></div>
+  <section id="papers">
+    <div class="shell">
+      <div class="section-head">
+        <div>
+          <h2>Latest Papers</h2>
+          <p>Peer-reviewed-style research reports, technical white papers, and experiment write-ups.</p>
+        </div>
+        <a class="view-all" href="#" onclick="alert('RSS and archive coming soon')">View archive →</a>
+      </div>
+      <div class="papers-grid" id="papers-grid">
+        <div class="paper-card"><div class="skeleton" style="height:20px;width:80px"></div><div class="skeleton" style="height:24px;width:90%"></div><div class="skeleton" style="height:60px;width:100%"></div><div class="skeleton" style="height:16px;width:60%"></div></div>
+        <div class="paper-card"><div class="skeleton" style="height:20px;width:80px"></div><div class="skeleton" style="height:24px;width:85%"></div><div class="skeleton" style="height:60px;width:100%"></div><div class="skeleton" style="height:16px;width:50%"></div></div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- CTA -->
-<section id="connect" class="cta-band">
-  <div class="shell reveal">
-    <span class="eyebrow">Collaborate</span>
-    <h2>Build the future of money education in public.</h2>
-    <p>We are looking for engineers, educators, researchers, and operators who want AI to make financial skills easier to learn.</p>
-    <div class="cta-actions">
-      <a class="button" href="mailto:hello@getmoneybot.com?subject=MoneyBot%20Labs">Email hello@getmoneybot.com</a>
-      <a class="button secondary" href="#artifacts">Explore live builds</a>
+  <section id="about" style="background:var(--surface)">
+    <div class="shell">
+      <div class="section-head">
+        <div>
+          <h2>About the Lab</h2>
+          <p>We turn complex research into accessible experiments.</p>
+        </div>
+      </div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            MoneyBot Lab is an independent research studio focused on the practical intersection of
+            emerging technology and everyday decision-making. We design experiments, publish findings,
+            and open-source tools that make advanced concepts easier to understand and apply.
+          </p>
+          <p>
+            Our work spans adaptive learning systems, financial interfaces, generative media, and
+            spatial computing. Every paper includes the data, code, or prototype needed to reproduce
+            or extend the work.
+          </p>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="stat-value" id="stat-papers">—</div><div class="stat-label">Papers published</div></div>
+          <div class="stat"><div class="stat-value" id="stat-verticals">4</div><div class="stat-label">Research verticals</div></div>
+          <div class="stat"><div class="stat-value" id="stat-experiments">12</div><div class="stat-label">Active experiments</div></div>
+          <div class="stat"><div class="stat-value" id="stat-collabs">6</div><div class="stat-label">Collaborators</div></div>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
+  <section class="cta" id="collaborate">
+    <div class="shell cta-inner">
+      <h2>Collaborate with the Lab</h2>
+      <p>We partner with researchers, founders, and institutions working on the future of education, finance, media, and immersive technology.</p>
+      <div class="hero-actions" style="justify-content:center">
+        <a class="button" href="mailto:hello@getmoneybot.com?subject=MoneyBot%20Lab%20Collaboration">Get in touch</a>
+        <a class="button secondary" href="https://github.com/Kgarmon99/moneybotlab" target="_blank" rel="noopener">View on GitHub</a>
+      </div>
+    </div>
+  </section>
 </main>
 
-<!-- Footer -->
 <footer>
   <div class="shell">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a class="mark" href="#top">
-          <span class="mark-symbol">MB</span>
-          <span>MoneyBot Labs</span>
-        </a>
-        <p>Playable financial education experiments. Games, simulators, and AI interfaces that make money skills stick.</p>
+        <a class="brand" href="/">MoneyBot <span>Lab</span></a>
+        <p>Applied research at the intersection of education, finance, media, and immersive technology.</p>
       </div>
-      <div class="footer-col">
-        <h4>Explore</h4>
-        <a href="#artifacts">Live Builds</a>
-        <a href="#demo">Budget Simulator</a>
-        <a href="#protocol">Lab Protocol</a>
-        <a href="https://getmoneybot.com" target="_blank" rel="noopener">MoneyBot</a>
-      </div>
-      <div class="footer-col">
-        <h4>Resources</h4>
-        <a href="https://moneybotgames.com" target="_blank" rel="noopener">MoneyBot Games</a>
-        <a href="#" onclick="alert('Coming soon')">Research Papers</a>
-        <a href="#" onclick="alert('Coming soon')">Open Source</a>
-      </div>
-      <div class="footer-col">
-        <h4>Connect</h4>
-        <a href="mailto:hello@getmoneybot.com">hello@getmoneybot.com</a>
+      <div class="footer-links">
+        <div>
+          <strong>Research</strong>
+          <a href="#papers">Papers</a>
+          <a href="#" onclick="alert('Coming soon')">Experiments</a>
+          <a href="#" onclick="alert('Coming soon')">Datasets</a>
+        </div>
+        <div>
+          <strong>Lab</strong>
+          <a href="#about">About</a>
+          <a href="#collaborate">Collaborate</a>
+          <a href="mailto:hello@getmoneybot.com">Contact</a>
+        </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 MoneyBot Labs — Education/simulation only.</span>
-      <div class="socials">
-        <a href="https://x.com/moneybot" target="_blank" rel="noopener" aria-label="Twitter/X">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        </a>
-        <a href="https://github.com/moneybot" target="_blank" rel="noopener" aria-label="GitHub">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-        </a>
-        <a href="#" onclick="alert('Coming soon')" aria-label="Discord">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.086 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.086 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-        </a>
-      </div>
+      <span>© 2026 MoneyBot Lab. Independent research studio.</span>
+      <span>Built for clarity, not hype.</span>
     </div>
   </div>
 </footer>
 
 <script>
-// ===== PRELOADER =====
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('preloader').classList.add('done');
-  }, 1400);
-});
-
-// ===== PARTICLE NETWORK =====
-(function() {
-  const canvas = document.getElementById('hero-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let w, h, particles = [], mouse = { x: null, y: null };
-  const PARTICLE_COUNT = 60;
-  const CONNECTION_DIST = 120;
-
-  function resize() {
-    w = canvas.width = canvas.offsetWidth;
-    h = canvas.height = canvas.offsetHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    particles.push({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      r: Math.random() * 2 + 1,
-    });
-  }
-
-  canvas.addEventListener('mousemove', e => {
-    const rect = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - rect.left;
-    mouse.y = e.clientY - rect.top;
+  // Mobile nav
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+  menuToggle.addEventListener('click', () => {
+    menuToggle.classList.toggle('open');
+    mobileNav.classList.toggle('open');
   });
-  canvas.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
-
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-    for (let i = 0; i < particles.length; i++) {
-      const p = particles[i];
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0 || p.x > w) p.vx *= -1;
-      if (p.y < 0 || p.y > h) p.vy *= -1;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(0, 230, 118, 0.4)';
-      ctx.fill();
-
-      for (let j = i + 1; j < particles.length; j++) {
-        const p2 = particles[j];
-        const dx = p.x - p2.x, dy = p.y - p2.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < CONNECTION_DIST) {
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `rgba(0, 230, 118, ${0.15 * (1 - dist / CONNECTION_DIST)})`;
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
-        }
-      }
-      if (mouse.x !== null) {
-        const dx = p.x - mouse.x, dy = p.y - mouse.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 180) {
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(mouse.x, mouse.y);
-          ctx.strokeStyle = `rgba(0, 230, 118, ${0.2 * (1 - dist / 180)})`;
-          ctx.lineWidth = 0.6;
-          ctx.stroke();
-        }
-      }
-    }
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-// ===== SCROLL REVEAL =====
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-// ===== HEADER SCROLL BEHAVIOR =====
-let lastScroll = 0;
-const header = document.getElementById('site-header');
-window.addEventListener('scroll', () => {
-  const currentScroll = window.pageYOffset;
-  if (currentScroll > 80) {
-    header.classList.add('scrolled');
-  } else {
-    header.classList.remove('scrolled');
-  }
-  if (currentScroll > lastScroll && currentScroll > 300) {
-    header.classList.add('hide');
-  } else {
-    header.classList.remove('hide');
-  }
-  lastScroll = currentScroll;
-});
-
-// ===== MOBILE NAV =====
-const menuToggle = document.getElementById('menu-toggle');
-const mobileNav = document.getElementById('mobile-nav');
-menuToggle.addEventListener('click', () => {
-  menuToggle.classList.toggle('open');
-  mobileNav.classList.toggle('open');
-  menuToggle.setAttribute('aria-expanded', mobileNav.classList.contains('open'));
-});
-mobileNav.querySelectorAll('a').forEach(a => {
-  a.addEventListener('click', () => {
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
     menuToggle.classList.remove('open');
     mobileNav.classList.remove('open');
-    menuToggle.setAttribute('aria-expanded', 'false');
+  }));
+
+  // Header scroll
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 20);
   });
-});
 
-// ===== BUDGET SIMULATOR =====
-const income = document.getElementById('income');
-const needs = document.getElementById('needs');
-const wants = document.getElementById('wants');
-const savings = document.getElementById('savings');
-const sliders = { needs, wants, savings };
+  // Active nav
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.desktop-nav a[href^="#"]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 120;
+      if (window.scrollY >= sectionTop) current = section.getAttribute('id');
+    });
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+    });
+  });
 
-function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
+  // Papers
+  let allPapers = [];
+  const papersGrid = document.getElementById('papers-grid');
+  const categoryButtons = document.querySelectorAll('.category-pill');
+  let currentCategory = 'all';
 
-function render() {
-  const inc = parseInt(income.value, 10);
-  const n = parseInt(needs.value, 10);
-  const w = parseInt(wants.value, 10);
-  const s = parseInt(savings.value, 10);
-
-  document.getElementById('income-display').textContent = fmt(inc);
-  document.getElementById('needs-pct').textContent = n + '%';
-  document.getElementById('wants-pct').textContent = w + '%';
-  document.getElementById('savings-pct').textContent = s + '%';
-  document.getElementById('needs-amount').textContent = fmt(inc * n / 100);
-  document.getElementById('wants-amount').textContent = fmt(inc * w / 100);
-  document.getElementById('savings-amount').textContent = fmt(inc * s / 100);
-  document.getElementById('needs-bar').style.width = n + '%';
-  document.getElementById('wants-bar').style.width = w + '%';
-  document.getElementById('savings-bar').style.width = s + '%';
-
-  const total = n + w + s;
-  const guardrail = document.getElementById('guardrail');
-  if (total !== 100) {
-    guardrail.innerHTML = `<strong>Allocation is ${total}%.</strong> Adjust the sliders so needs + wants + savings equal 100%.`;
-    guardrail.style.borderLeftColor = 'var(--red)';
-    guardrail.style.background = 'rgba(255, 61, 0, 0.08)';
-  } else if (n === 50 && w === 30 && s === 20) {
-    guardrail.innerHTML = '<strong>50/30/20 rule of thumb.</strong> This demo is for education only. Your real budget depends on your location, obligations, and goals.';
-    guardrail.style.borderLeftColor = 'var(--green)';
-    guardrail.style.background = 'rgba(0, 230, 118, 0.06)';
-  } else {
-    guardrail.innerHTML = '<strong>Custom allocation.</strong> This demo is for education only. Your real budget depends on your location, obligations, and goals.';
-    guardrail.style.borderLeftColor = 'var(--green)';
-    guardrail.style.background = 'rgba(0, 230, 118, 0.06)';
-  }
-}
-
-function balance(changedKey) {
-  const keys = ['needs', 'wants', 'savings'];
-  const changed = sliders[changedKey];
-  const others = keys.filter(k => k !== changedKey);
-  const changedVal = parseInt(changed.value, 10);
-  const remaining = 100 - changedVal;
-
-  if (remaining < 0) {
-    changed.value = 100;
-    others.forEach(k => sliders[k].value = 0);
-    render(); return;
+  function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
   }
 
-  const a = parseInt(sliders[others[0]].value, 10);
-  const b = parseInt(sliders[others[1]].value, 10);
-  const sum = a + b;
+  function renderPapers(papers) {
+    if (papers.length === 0) {
+      papersGrid.innerHTML = `
+        <div class="empty-state" style="grid-column:1/-1">
+          <h3>No papers in this category yet.</h3>
+          <p>Check back soon or subscribe for updates.</p>
+        </div>`;
+      return;
+    }
 
-  if (sum === 0) {
-    sliders[others[0]].value = Math.round(remaining / 2);
-    sliders[others[1]].value = remaining - sliders[others[0]].value;
-  } else {
-    const ratio = remaining / sum;
-    let newA = Math.round(a * ratio);
-    let newB = remaining - newA;
-    if (newA < 0) { newA = 0; newB = remaining; }
-    if (newB < 0) { newB = 0; newA = remaining; }
-    sliders[others[0]].value = newA;
-    sliders[others[1]].value = newB;
+    papersGrid.innerHTML = papers.map(paper => `
+      <article class="paper-card">
+        <div class="paper-meta">
+          <span class="paper-category">${paper.category}</span>
+          <span class="paper-date">${formatDate(paper.date)}</span>
+        </div>
+        <h3>${paper.title}</h3>
+        <p>${paper.abstract}</p>
+        <div class="authors">${paper.authors}</div>
+        <div class="actions">
+          <a href="${paper.pdfUrl}" target="_blank" rel="noopener">Download PDF →</a>
+        </div>
+      </article>
+    `).join('');
   }
-  render();
-}
 
-income.addEventListener('input', render);
-needs.addEventListener('input', () => balance('needs'));
-wants.addEventListener('input', () => balance('wants'));
-savings.addEventListener('input', () => balance('savings'));
-render();
+  function filterPapers(category) {
+    currentCategory = category;
+    categoryButtons.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.category === category);
+    });
+    const filtered = category === 'all'
+      ? allPapers
+      : allPapers.filter(p => p.category === category);
+    renderPapers(filtered);
+  }
 
-// ===== NEWSLETTER =====
-function handleNewsletter(e) {
-  e.preventDefault();
-  const email = document.getElementById('email').value;
-  const status = document.getElementById('newsletter-status');
-  const btn = e.target.querySelector('button');
-  const originalText = btn.textContent;
+  categoryButtons.forEach(btn => {
+    btn.addEventListener('click', () => filterPapers(btn.dataset.category));
+  });
 
-  btn.textContent = 'Subscribing...';
-  btn.disabled = true;
+  async function loadPapers() {
+    try {
+      const response = await fetch('/api/papers');
+      const data = await response.json();
+      allPapers = data.papers || [];
+      allPapers.sort((a, b) => new Date(b.date) - new Date(a.date));
+      document.getElementById('stat-papers').textContent = allPapers.length;
+      filterPapers('all');
+    } catch (error) {
+      console.error('Failed to load papers:', error);
+      papersGrid.innerHTML = `
+        <div class="empty-state" style="grid-column:1/-1">
+          <h3>Unable to load papers.</h3>
+          <p>Please refresh the page or try again later.</p>
+        </div>`;
+    }
+  }
 
-  setTimeout(() => {
-    status.textContent = `✓ You're in. We'll send experiments to ${email}.`;
-    status.className = 'newsletter-status success';
-    btn.textContent = 'Subscribed';
-    document.getElementById('email').value = '';
-
-    setTimeout(() => {
-      btn.textContent = originalText;
-      btn.disabled = false;
-      status.textContent = '';
-      status.className = 'newsletter-status';
-    }, 4000);
-  }, 1200);
-}
+  loadPapers();
 </script>
+
 </body>
 </html>

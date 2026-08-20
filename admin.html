@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin — MoneyBot Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafafa; --surface: #ffffff; --surface-2: #f5f5f7;
+      --border: #e8e8ed; --border-strong: #d2d2d7;
+      --text: #111111; --text-secondary: #6e6e73; --text-tertiary: #86868b;
+      --accent: #1d1d1f; --accent-soft: #f2f2f2;
+      --link: #0066cc; --success: #027a36; --error: #dc2626;
+      --radius: 16px; --radius-sm: 10px;
+      --font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+      --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
+      --shadow-lg: 0 4px 24px rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font); color: var(--text); background: var(--bg);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      min-height: 100vh; display: flex; flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .shell { width: min(680px, calc(100% - 48px)); margin: 0 auto; }
+
+    header {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      min-height: 64px;
+    }
+    .brand { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+    .brand span { color: var(--text-secondary); font-weight: 500; }
+    .back-link {
+      font-size: 14px; color: var(--text-secondary); font-weight: 500;
+      display: flex; align-items: center; gap: 6px; transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--text); }
+
+    main { flex: 1; padding: 48px 0 80px; }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 36px; box-shadow: var(--shadow);
+    }
+    .card-header { margin-bottom: 28px; }
+    h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+    .subtitle { color: var(--text-secondary); font-size: 15px; }
+
+    .form-group { margin-bottom: 22px; }
+    label {
+      display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;
+      color: var(--text);
+    }
+    label .required { color: var(--error); margin-left: 2px; }
+    input[type="text"], input[type="password"], input[type="date"], select, textarea {
+      width: 100%; padding: 12px 14px; border-radius: var(--radius-sm);
+      border: 1px solid var(--border); background: var(--bg);
+      font-family: var(--font); font-size: 15px; color: var(--text);
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--text-secondary);
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.04);
+    }
+    textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
+    select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236e6e73' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+
+    .file-drop {
+      border: 2px dashed var(--border); border-radius: var(--radius-sm);
+      padding: 32px 24px; text-align: center; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      background: var(--bg);
+    }
+    .file-drop:hover, .file-drop.dragover {
+      border-color: var(--text-secondary); background: var(--surface-2);
+    }
+    .file-drop input { display: none; }
+    .file-drop-icon { font-size: 28px; margin-bottom: 10px; }
+    .file-drop-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .file-drop-hint { font-size: 13px; color: var(--text-secondary); }
+    .file-selected {
+      display: flex; align-items: center; gap: 10px; margin-top: 12px;
+      padding: 10px 14px; background: var(--surface-2); border-radius: var(--radius-sm);
+      font-size: 13px;
+    }
+    .file-selected button {
+      margin-left: auto; background: none; border: none; color: var(--text-secondary);
+      cursor: pointer; font-size: 12px; font-weight: 500;
+    }
+    .file-selected button:hover { color: var(--error); }
+
+    .button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 24px; border-radius: var(--radius-sm);
+      font-size: 15px; font-weight: 600;
+      border: 1px solid var(--accent); background: var(--accent); color: #fff;
+      cursor: pointer; transition: transform 0.15s, opacity 0.2s, box-shadow 0.2s;
+    }
+    .button:hover { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+    .button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .button.secondary {
+      background: transparent; color: var(--text); border-color: var(--border-strong);
+    }
+    .button.secondary:hover { background: var(--surface-2); }
+
+    .actions { display: flex; gap: 12px; margin-top: 32px; }
+
+    .alert {
+      padding: 14px 18px; border-radius: var(--radius-sm); margin-bottom: 24px;
+      font-size: 14px; display: none;
+    }
+    .alert.show { display: block; }
+    .alert.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: var(--success); }
+    .alert.error { background: #fef2f2; border: 1px solid #fecaca; color: var(--error); }
+
+    .login-screen { max-width: 420px; margin: 80px auto; }
+    .login-screen .card { text-align: center; }
+    .login-screen h1 { font-size: 22px; }
+    .lock-icon { font-size: 36px; margin-bottom: 16px; }
+
+    .hidden { display: none !important; }
+
+    footer {
+      padding: 24px 0; border-top: 1px solid var(--border);
+      color: var(--text-secondary); font-size: 13px; text-align: center;
+    }
+
+    @media (max-width: 560px) {
+      .card { padding: 24px; }
+      h1 { font-size: 22px; }
+      .actions { flex-direction: column; }
+      .button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="shell nav">
+    <a class="brand" href="/">MoneyBot <span>Lab</span></a>
+    <a class="back-link" href="/">← Back to site</a>
+  </div>
+</header>
+
+<main>
+  <div class="shell">
+    <!-- Login -->
+    <div class="login-screen" id="login-screen">
+      <div class="card">
+        <div class="lock-icon">🔒</div>
+        <div class="card-header">
+          <h1>Research Admin</h1>
+          <p class="subtitle">Enter the admin password to upload papers.</p>
+        </div>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-password">Password <span class="required">*</span></label>
+            <input type="password" id="login-password" required autofocus placeholder="Admin password">
+          </div>
+          <button type="submit" class="button" style="width:100%">Continue</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Upload Form -->
+    <div class="hidden" id="upload-screen">
+      <div class="card">
+        <div class="card-header">
+          <h1>Upload Research Paper</h1>
+          <p class="subtitle">Add a new paper to the public research archive. PDFs are committed to GitHub and the site rebuilds automatically.</p>
+        </div>
+
+        <div class="alert" id="alert"></div>
+
+        <form id="upload-form">
+          <input type="hidden" id="admin-password">
+
+          <div class="form-group">
+            <label for="title">Paper Title <span class="required">*</span></label>
+            <input type="text" id="title" required placeholder="e.g., AI Tutors and the Future of Financial Literacy">
+          </div>
+
+          <div class="form-group">
+            <label for="authors">Authors <span class="required">*</span></label>
+            <input type="text" id="authors" required placeholder="e.g., Joseph Felkins, Kahlil Garmon">
+          </div>
+
+          <div class="form-group">
+            <label for="category">Research Category <span class="required">*</span></label>
+            <select id="category" required>
+              <option value="">Select a category</option>
+              <option value="EdTech">EdTech</option>
+              <option value="FinTech">FinTech</option>
+              <option value="MediaTech">MediaTech</option>
+              <option value="ImmersiveTech">ImmersiveTech</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="date">Publication Date <span class="required">*</span></label>
+            <input type="date" id="date" required>
+          </div>
+
+          <div class="form-group">
+            <label for="abstract">Abstract <span class="required">*</span></label>
+            <textarea id="abstract" required placeholder="Brief summary of the paper's contribution, methods, and findings."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>PDF File <span class="required">*</span></label>
+            <label class="file-drop" id="file-drop">
+              <input type="file" id="pdf-file" accept=".pdf,application/pdf" required>
+              <div class="file-drop-icon">📄</div>
+              <div class="file-drop-title">Click to upload or drag PDF here</div>
+              <div class="file-drop-hint">Maximum file size: 10 MB</div>
+            </label>
+            <div class="file-selected hidden" id="file-selected">
+              <span id="file-name"></span>
+              <button type="button" id="remove-file">Remove</button>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="button" id="submit-btn">Upload Paper</button>
+            <button type="button" class="button secondary" id="logout-btn">Log out</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="shell">
+    MoneyBot Lab — Admin Portal
+  </div>
+</footer>
+
+<script>
+  const loginScreen = document.getElementById('login-screen');
+  const uploadScreen = document.getElementById('upload-screen');
+  const loginForm = document.getElementById('login-form');
+  const uploadForm = document.getElementById('upload-form');
+  const alertBox = document.getElementById('alert');
+  const adminPasswordInput = document.getElementById('admin-password');
+  const fileInput = document.getElementById('pdf-file');
+  const fileDrop = document.getElementById('file-drop');
+  const fileSelected = document.getElementById('file-selected');
+  const fileName = document.getElementById('file-name');
+  const removeFile = document.getElementById('remove-file');
+  const submitBtn = document.getElementById('submit-btn');
+  const logoutBtn = document.getElementById('logout-btn');
+
+  let selectedFile = null;
+
+  function showAlert(message, type) {
+    alertBox.textContent = message;
+    alertBox.className = `alert ${type} show`;
+    setTimeout(() => alertBox.classList.remove('show'), 8000);
+  }
+
+  function showUpload() {
+    loginScreen.classList.add('hidden');
+    uploadScreen.classList.remove('hidden');
+  }
+
+  function showLogin() {
+    uploadScreen.classList.add('hidden');
+    loginScreen.classList.remove('hidden');
+    document.getElementById('login-password').value = '';
+    adminPasswordInput.value = '';
+  }
+
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const password = document.getElementById('login-password').value;
+    if (!password) return;
+    adminPasswordInput.value = password;
+    showUpload();
+  });
+
+  logoutBtn.addEventListener('click', showLogin);
+
+  // File handling
+  fileDrop.addEventListener('click', () => fileInput.click());
+  fileDrop.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    fileDrop.classList.add('dragover');
+  });
+  fileDrop.addEventListener('dragleave', () => fileDrop.classList.remove('dragover'));
+  fileDrop.addEventListener('drop', (e) => {
+    e.preventDefault();
+    fileDrop.classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    if (files.length) handleFile(files[0]);
+  });
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length) handleFile(fileInput.files[0]);
+  });
+
+  function handleFile(file) {
+    if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) {
+      showAlert('Please upload a PDF file.', 'error');
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      showAlert('File size must be under 10 MB.', 'error');
+      return;
+    }
+    selectedFile = file;
+    fileName.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+    fileSelected.classList.remove('hidden');
+  }
+
+  removeFile.addEventListener('click', () => {
+    selectedFile = null;
+    fileInput.value = '';
+    fileSelected.classList.add('hidden');
+  });
+
+  // Upload
+  uploadForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!selectedFile) {
+      showAlert('Please select a PDF file.', 'error');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Reading PDF...';
+
+    try {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result.split(',')[1];
+
+        submitBtn.textContent = 'Uploading...';
+
+        const payload = {
+          password: adminPasswordInput.value,
+          title: document.getElementById('title').value,
+          authors: document.getElementById('authors').value,
+          category: document.getElementById('category').value,
+          date: document.getElementById('date').value,
+          abstract: document.getElementById('abstract').value,
+          pdfBase64: base64,
+          filename: selectedFile.name
+        };
+
+        const response = await fetch('/api/upload-paper', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          showAlert(data.message, 'success');
+          uploadForm.reset();
+          selectedFile = null;
+          fileSelected.classList.add('hidden');
+        } else {
+          showAlert(data.error || 'Upload failed. Please try again.', 'error');
+        }
+      };
+      reader.readAsDataURL(selectedFile);
+    } catch (error) {
+      showAlert('Upload failed: ' + error.message, 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Upload Paper';
+    }
+  });
+
+  // Set default date to today
+  document.getElementById('date').valueAsDate = new Date();
+</script>
+
+</body>
+</html>
