@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MoneyBot Labs builds playable financial education experiments — games, simulators, and AI interfaces that make money skills stick.">
+  <title>MoneyBot Labs | Playable money experiments</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a1a;
+      --bg-elev: #101026;
+      --panel: rgba(255, 255, 255, 0.045);
+      --panel-strong: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.10);
+      --green: #00E676;
+      --green-dim: #00C853;
+      --green-glow: rgba(0, 230, 118, 0.28);
+      --blue: #00B0FF;
+      --red: #FF3D00;
+      --text: #f4f4fb;
+      --muted: #9aa0b8;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    img { display: block; max-width: 100%; }
+
+    .shell {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10, 10, 26, 0.82);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 64px;
+      gap: 16px;
+    }
+
+    .mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+
+    .mark-symbol {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      background: var(--green);
+      color: var(--bg);
+      font-size: 13px;
+      font-weight: 900;
+      box-shadow: 0 0 18px var(--green-glow);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    nav a:hover { color: var(--text); }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      padding: 0 16px;
+      border-radius: 8px;
+      background: var(--green);
+      color: var(--bg);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    /* Buttons */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 0 22px;
+      border-radius: 10px;
+      border: 1px solid var(--green);
+      background: var(--green);
+      color: var(--bg);
+      font-weight: 700;
+      font-size: 15px;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 24px var(--green-glow);
+    }
+
+    .button.secondary {
+      background: transparent;
+      color: var(--green);
+      border-color: rgba(0, 230, 118, 0.45);
+    }
+
+    .button.secondary:hover {
+      background: rgba(0, 230, 118, 0.08);
+      box-shadow: 0 0 18px var(--green-glow);
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(180deg, rgba(10, 10, 26, 0.92) 0%, rgba(10, 10, 26, 0.82) 48%, rgba(10, 10, 26, 0.96) 100%),
+        url("assets/moneybot-labs-hero.png");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 48px;
+      align-items: center;
+      padding: 84px 0 72px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
+    }
+
+    h1 {
+      margin: 18px 0 0;
+      font-size: clamp(40px, 6vw, 76px);
+      line-height: 0.96;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-copy {
+      margin-top: 22px;
+      max-width: 540px;
+      color: var(--muted);
+      font-size: clamp(17px, 1.9vw, 20px);
+      line-height: 1.55;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .mascot-wrap {
+      display: grid;
+      place-items: center;
+    }
+
+    .mascot {
+      width: min(280px, 72vw);
+      height: auto;
+      filter: drop-shadow(0 0 34px rgba(0, 230, 118, 0.18));
+    }
+
+    /* Sections */
+    section {
+      padding: 72px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(28px, 3.6vw, 44px);
+      line-height: 1.05;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .section-head {
+      margin-bottom: 34px;
+    }
+
+    .section-head p {
+      margin-top: 12px;
+      max-width: 620px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    /* Live artifacts */
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .artifact {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 160px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--panel);
+      transition: border-color .15s ease, transform .15s ease, background .15s ease;
+    }
+
+    .artifact:hover {
+      border-color: rgba(0, 230, 118, 0.35);
+      background: var(--panel-strong);
+      transform: translateY(-2px);
+    }
+
+    .artifact b {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .artifact h3 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.15;
+      font-weight: 700;
+    }
+
+    .artifact p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .artifact .link {
+      margin-top: auto;
+      padding-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--green);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .artifact .link::after {
+      content: "→";
+      transition: transform .15s ease;
+    }
+
+    .artifact:hover .link::after { transform: translateX(3px); }
+
+    /* Demo */
+    .demo {
+      background: var(--bg-elev);
+    }
+
+    .demo-frame {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--panel);
+      overflow: hidden;
+    }
+
+    .demo-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .demo-top span {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .demo-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .demo-status::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    .demo-body {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.42fr) 1fr;
+      gap: 28px;
+      padding: 26px;
+    }
+
+    .controls { display: grid; gap: 22px; }
+
+    .control label {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .control label strong { color: var(--text); }
+
+    .control input[type="range"] {
+      width: 100%;
+      height: 6px;
+      appearance: none;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.10);
+      outline: none;
+    }
+
+    .control input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px var(--green-glow);
+      cursor: pointer;
+    }
+
+    .control input[type="range"]::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px var(--green-glow);
+      cursor: pointer;
+    }
+
+    .income-value {
+      font-family: var(--mono);
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .readout {
+      display: grid;
+      gap: 16px;
+    }
+
+    .bucket {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.22);
+    }
+
+    .bucket-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .bucket-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.needs { background: var(--green); }
+    .dot.wants { background: var(--blue); }
+    .dot.savings { background: #a78bfa; }
+
+    .bucket-amount {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .bar {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+
+    .bar > i {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      transition: width .15s ease;
+    }
+
+    .bar.needs > i { background: var(--green); box-shadow: 0 0 12px var(--green-glow); }
+    .bar.wants > i { background: var(--blue); }
+    .bar.savings > i { background: #a78bfa; }
+
+    .bucket-note {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .guardrail {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-left: 3px solid var(--green);
+      border-radius: 0 10px 10px 0;
+      background: rgba(0, 230, 118, 0.06);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    /* Protocol */
+    .protocol {
+      display: grid;
+      grid-template-columns: minmax(0, 0.55fr) minmax(0, 0.45fr);
+      gap: 34px;
+      align-items: center;
+    }
+
+    .protocol-visual {
+      min-height: 320px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(180deg, rgba(10, 10, 26, 0.78) 0%, rgba(10, 10, 26, 0.92) 100%),
+        url("assets/lab-hero.png");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .protocol-list {
+      display: grid;
+      gap: 18px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .protocol-list li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 14px;
+      align-items: start;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .protocol-list b { color: var(--text); }
+
+    .num {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(0, 230, 118, 0.12);
+      color: var(--green);
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .safety {
+      margin-top: 28px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .safety strong { color: var(--text); }
+
+    /* CTA band */
+    .cta-band {
+      text-align: center;
+      border-bottom: 0;
+    }
+
+    .cta-band h2 { margin: 0 auto; max-width: 560px; }
+    .cta-band p {
+      margin: 14px auto 0;
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+    .cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    /* Footer */
+    footer {
+      padding: 34px 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .footer-row a { color: var(--green); }
+    .footer-row a:hover { text-decoration: underline; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      nav { display: none; }
+
+      .hero-grid,
+      .artifact-grid,
+      .demo-body,
+      .protocol {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-grid { padding: 64px 0 54px; }
+      .mascot-wrap { order: -1; }
+      .mascot { width: min(220px, 60vw); }
+
+      .protocol-visual { min-height: 220px; }
+    }
+
+    @media (max-width: 560px) {
+      .shell { width: min(100% - 24px, 1100px); }
+      section { padding: 56px 0; }
+      .artifact { padding: 18px; min-height: auto; }
+      .demo-body { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="shell nav">
+      <a class="mark" href="#top" aria-label="MoneyBot Labs home">
+        <span class="mark-symbol">MB</span>
+        <span>MoneyBot Labs</span>
+      </a>
+      <nav>
+        <a href="#artifacts">Live builds</a>
+        <a href="#demo">Demo</a>
+        <a href="#protocol">Protocol</a>
+        <a class="nav-cta" href="#connect">Collaborate</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="shell hero-grid">
+        <div>
+          <span class="eyebrow">AI experiments for financial education</span>
+          <h1 id="hero-title">MoneyBot Labs</h1>
+          <p class="hero-copy">A research surface for playable money experiments: games, simulators, and AI interfaces that make financial skills easier to learn, practice, and remember.</p>
+          <div class="hero-actions">
+            <a class="button" href="#demo">Try the demo</a>
+            <a class="button secondary" href="mailto:hello@getmoneybot.com?subject=MoneyBot%20Labs">Collaborate</a>
+          </div>
+        </div>
+        <div class="mascot-wrap" aria-hidden="true">
+          <svg class="mascot" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#e0e2f0"/>
+              </linearGradient>
+              <linearGradient id="screenGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0f1426"/>
+                <stop offset="100%" stop-color="#050712"/>
+              </linearGradient>
+            </defs>
+            <!-- Antenna -->
+            <line x1="100" y1="38" x2="100" y2="18" stroke="#d0d4e8" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="100" cy="14" r="7" fill="#00E676" filter="url(#glow)"/>
+            <!-- Head -->
+            <rect x="54" y="40" width="92" height="74" rx="22" fill="url(#bodyGrad)"/>
+            <!-- Face screen -->
+            <rect x="64" y="54" width="72" height="46" rx="14" fill="url(#screenGrad)"/>
+            <!-- Eyes -->
+            <circle cx="84" cy="70" r="7" fill="#00E676" filter="url(#glow)"/>
+            <circle cx="116" cy="70" r="7" fill="#00E676" filter="url(#glow)"/>
+            <!-- Body -->
+            <path d="M60 110 L44 180 C42 190 50 198 60 198 L140 198 C150 198 158 190 156 180 L140 110 Z" fill="url(#bodyGrad)"/>
+            <!-- Chest core -->
+            <rect x="78" y="132" width="44" height="44" rx="12" fill="#0a0f22" stroke="rgba(0,230,118,0.35)" stroke-width="2"/>
+            <path d="M88 154 L100 166 L112 146" stroke="#00E676" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#glow)"/>
+            <!-- Arms -->
+            <path d="M56 120 L32 154" stroke="#e0e2f0" stroke-width="14" stroke-linecap="round"/>
+            <path d="M144 120 L168 154" stroke="#e0e2f0" stroke-width="14" stroke-linecap="round"/>
+            <!-- Hands -->
+            <circle cx="30" cy="158" r="10" fill="#ffffff"/>
+            <circle cx="170" cy="158" r="10" fill="#ffffff"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section id="artifacts">
+      <div class="shell">
+        <div class="section-head">
+          <span class="eyebrow">Live artifacts</span>
+          <h2>Real builds you can open now.</h2>
+          <p>These are working MoneyBot experiments, not concept slides. Each one ships as a playable surface.</p>
+        </div>
+        <div class="artifact-grid">
+          <a class="artifact" href="https://moneybotgames.com/moneybot-official/" target="_blank" rel="noopener">
+            <b>Arcade Hub</b>
+            <h3>MoneyBot Arcade</h3>
+            <p>The central hub for MoneyBot games and experiments.</p>
+            <span class="link">Open the arcade</span>
+          </a>
+          <a class="artifact" href="https://moneybotgames.com/apps/speaking-mastery/" target="_blank" rel="noopener">
+            <b>Speaking Lab</b>
+            <h3>Speaking Mastery</h3>
+            <p>Practice financial conversations with an AI speaking coach.</p>
+            <span class="link">Try Speaking Mastery</span>
+          </a>
+          <a class="artifact" href="https://moneybotgames.com/games/runway-rush/" target="_blank" rel="noopener">
+            <b>Runway Game</b>
+            <h3>Burn Rate / Runway Rush</h3>
+            <p>A founder finance survival game about burn, runway, and cash timing.</p>
+            <span class="link">Play Runway Rush</span>
+          </a>
+          <a class="artifact" href="https://moneybotgames.com/games/cashflow-runner/" target="_blank" rel="noopener">
+            <b>Cashflow Game</b>
+            <h3>Cashflow Runner</h3>
+            <p>Learn income, expenses, and cashflow rhythm through play.</p>
+            <span class="link">Play Cashflow Runner</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="demo" class="demo">
+      <div class="shell">
+        <div class="section-head">
+          <span class="eyebrow">Interactive demo</span>
+          <h2>Budget simulator.</h2>
+          <p>Move the income slider, then adjust how you split needs, wants, and savings. The math updates instantly.</p>
+        </div>
+        <div class="demo-frame">
+          <div class="demo-top">
+            <span>moneybot-labs / budget-sim v1</span>
+            <span class="demo-status">Live</span>
+          </div>
+          <div class="demo-body">
+            <div class="controls">
+              <div class="control">
+                <label>Monthly income <strong class="income-value" id="income-display">$3,000</strong></label>
+                <input type="range" id="income" min="500" max="6000" step="50" value="3000" aria-label="Monthly income">
+              </div>
+              <div class="control">
+                <label>Needs <strong id="needs-pct">50%</strong></label>
+                <input type="range" id="needs" min="0" max="100" step="1" value="50" aria-label="Needs percentage">
+              </div>
+              <div class="control">
+                <label>Wants <strong id="wants-pct">30%</strong></label>
+                <input type="range" id="wants" min="0" max="100" step="1" value="30" aria-label="Wants percentage">
+              </div>
+              <div class="control">
+                <label>Savings <strong id="savings-pct">20%</strong></label>
+                <input type="range" id="savings" min="0" max="100" step="1" value="20" aria-label="Savings percentage">
+              </div>
+            </div>
+            <div class="readout">
+              <div class="bucket">
+                <div class="bucket-head">
+                  <span class="bucket-title"><span class="dot needs"></span> Needs</span>
+                  <span class="bucket-amount" id="needs-amount">$1,500</span>
+                </div>
+                <div class="bar needs"><i id="needs-bar" style="width: 50%"></i></div>
+                <div class="bucket-note">Rent, groceries, utilities, minimum debt payments.</div>
+              </div>
+              <div class="bucket">
+                <div class="bucket-head">
+                  <span class="bucket-title"><span class="dot wants"></span> Wants</span>
+                  <span class="bucket-amount" id="wants-amount">$900</span>
+                </div>
+                <div class="bar wants"><i id="wants-bar" style="width: 30%"></i></div>
+                <div class="bucket-note">Dining out, subscriptions, entertainment, travel.</div>
+              </div>
+              <div class="bucket">
+                <div class="bucket-head">
+                  <span class="bucket-title"><span class="dot savings"></span> Savings</span>
+                  <span class="bucket-amount" id="savings-amount">$600</span>
+                </div>
+                <div class="bar savings"><i id="savings-bar" style="width: 20%"></i></div>
+                <div class="bucket-note">Emergency fund, retirement, extra debt payoff.</div>
+              </div>
+              <div class="guardrail" id="guardrail">
+                <strong>50/30/20 rule of thumb.</strong> This demo is for education only. Your real budget depends on your location, obligations, and goals.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="protocol">
+      <div class="shell protocol">
+        <div class="protocol-visual" role="img" aria-label="MoneyBot Lab terminal environment"></div>
+        <div>
+          <span class="eyebrow">Lab protocol</span>
+          <h2>Every demo has receipts.</h2>
+          <ul class="protocol-list">
+            <li><span class="num">1</span><span><b>Question.</b> Start with a financial skill that is hard to teach, practice, or remember.</span></li>
+            <li><span class="num">2</span><span><b>Prototype.</b> Ship the smallest playable demo that makes the learning loop observable.</span></li>
+            <li><span class="num">3</span><span><b>Publish.</b> Share the build, the safety limits, and what still needs to be true.</span></li>
+            <li><span class="num">4</span><span><b>Measure.</b> Track clarity, completion, and where the model or design still fails.</span></li>
+          </ul>
+          <div class="safety">
+            <strong>Education and simulation only.</strong> MoneyBot Labs does not provide personalized investment, tax, or legal advice. The games and demos use fictional scenarios and simplified math for learning purposes.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="connect" class="cta-band">
+      <span class="eyebrow">Collaborate</span>
+      <h2>Build the future of money education in public.</h2>
+      <p>We are looking for engineers, educators, researchers, and operators who want AI to make financial skills easier to learn.</p>
+      <div class="cta-actions">
+        <a class="button" href="mailto:hello@getmoneybot.com?subject=MoneyBot%20Labs">Email hello@getmoneybot.com</a>
+        <a class="button secondary" href="#artifacts">Explore live builds</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-row">
+      <span>MoneyBot Labs — playable financial education experiments.</span>
+      <span><a href="mailto:hello@getmoneybot.com">hello@getmoneybot.com</a> · Education/simulation only. No personalized financial advice.</span>
+    </div>
+  </footer>
+
+  <script>
+    const income = document.getElementById('income');
+    const needs = document.getElementById('needs');
+    const wants = document.getElementById('wants');
+    const savings = document.getElementById('savings');
+
+    const sliders = { needs, wants, savings };
+
+    function fmt(n) {
+      return '$' + Math.round(n).toLocaleString();
+    }
+
+    function render() {
+      const inc = parseInt(income.value, 10);
+      const n = parseInt(needs.value, 10);
+      const w = parseInt(wants.value, 10);
+      const s = parseInt(savings.value, 10);
+
+      document.getElementById('income-display').textContent = fmt(inc);
+
+      document.getElementById('needs-pct').textContent = n + '%';
+      document.getElementById('wants-pct').textContent = w + '%';
+      document.getElementById('savings-pct').textContent = s + '%';
+
+      document.getElementById('needs-amount').textContent = fmt(inc * n / 100);
+      document.getElementById('wants-amount').textContent = fmt(inc * w / 100);
+      document.getElementById('savings-amount').textContent = fmt(inc * s / 100);
+
+      document.getElementById('needs-bar').style.width = n + '%';
+      document.getElementById('wants-bar').style.width = w + '%';
+      document.getElementById('savings-bar').style.width = s + '%';
+
+      const total = n + w + s;
+      const guardrail = document.getElementById('guardrail');
+      if (total !== 100) {
+        guardrail.innerHTML = `<strong>Allocation is ${total}%.</strong> Adjust the sliders so needs + wants + savings equal 100%.`;
+        guardrail.style.borderLeftColor = 'var(--red)';
+        guardrail.style.background = 'rgba(255, 61, 0, 0.08)';
+      } else if (n === 50 && w === 30 && s === 20) {
+        guardrail.innerHTML = '<strong>50/30/20 rule of thumb.</strong> This demo is for education only. Your real budget depends on your location, obligations, and goals.';
+        guardrail.style.borderLeftColor = 'var(--green)';
+        guardrail.style.background = 'rgba(0, 230, 118, 0.06)';
+      } else {
+        guardrail.innerHTML = '<strong>Custom allocation.</strong> This demo is for education only. Your real budget depends on your location, obligations, and goals.';
+        guardrail.style.borderLeftColor = 'var(--green)';
+        guardrail.style.background = 'rgba(0, 230, 118, 0.06)';
+      }
+    }
+
+    function balance(changedKey) {
+      const keys = ['needs', 'wants', 'savings'];
+      const changed = sliders[changedKey];
+      const others = keys.filter(k => k !== changedKey);
+      const changedVal = parseInt(changed.value, 10);
+      const remaining = 100 - changedVal;
+
+      if (remaining < 0) {
+        changed.value = 100;
+        others.forEach(k => sliders[k].value = 0);
+        render();
+        return;
+      }
+
+      const a = parseInt(sliders[others[0]].value, 10);
+      const b = parseInt(sliders[others[1]].value, 10);
+      const sum = a + b;
+
+      if (sum === 0) {
+        sliders[others[0]].value = Math.round(remaining / 2);
+        sliders[others[1]].value = remaining - sliders[others[0]].value;
+      } else {
+        const ratio = remaining / sum;
+        let newA = Math.round(a * ratio);
+        let newB = remaining - newA;
+        // Fix rounding overshoot
+        if (newA < 0) { newA = 0; newB = remaining; }
+        if (newB < 0) { newB = 0; newA = remaining; }
+        sliders[others[0]].value = newA;
+        sliders[others[1]].value = newB;
+      }
+      render();
+    }
+
+    income.addEventListener('input', render);
+    needs.addEventListener('input', () => balance('needs'));
+    wants.addEventListener('input', () => balance('wants'));
+    savings.addEventListener('input', () => balance('savings'));
+
+    render();
+  </script>
+</body>
+</html>
