@@ -106,7 +106,7 @@ export default async function handler(req, res) {
     }
 
     const slug = toSlug(title);
-    const pdfPath = `public/papers/${slug}.pdf`;
+    const pdfPath = `papers/${slug}.pdf`;
 
     // Get current papers.json
     let papers = { papers: [] };
