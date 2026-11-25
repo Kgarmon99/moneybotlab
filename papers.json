@@ -1,14 +1,3 @@
 {
-  "papers": [
-    {
-      "id": "ai-tutors-financial-literacy",
-      "title": "AI Tutors and the Future of Financial Literacy",
-      "authors": "MoneyBot Lab Research Team",
-      "category": "EdTech",
-      "date": "2026-08-15",
-      "abstract": "An exploration of how conversational AI changes the way people learn compound interest, budgeting, and investment fundamentals.",
-      "pdfUrl": "/papers/ai-tutors-financial-literacy.pdf",
-      "slug": "ai-tutors-financial-literacy"
-    }
-  ]
+  "papers": []
 }
